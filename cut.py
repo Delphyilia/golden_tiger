@@ -21,9 +21,9 @@ def trim_mp3(input_file, output_file, start_time_ms, end_time_ms):
 
 # 使用例
 input_mp3 = "./gold_tiger.mp3"  # 入力ファイル名
-output_mp3 = "output10.mp3"       # 出力ファイル名
-start_ms = 28100                  # 開始時間（ミリ秒）
-end_ms = 30750                 # 終了時間（ミリ秒）
+output_mp3 = "output7.mp3"       # 出力ファイル名
+start_ms = 37500                  # 開始時間（ミリ秒）
+end_ms = 40100                 # 終了時間（ミリ秒）
 
 trim_mp3(input_mp3, output_mp3, start_ms, end_ms)
 
@@ -38,4 +38,7 @@ trim_mp3(input_mp3, output_mp3, start_ms, end_ms)
 ~23190
 ~25500
 ~28100
+~30750
+~33450
+~37500
 '''
