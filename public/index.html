@@ -33,26 +33,35 @@
         return;
       }
 
-      // サーバーにリクエスト
-      const response = await fetch('/generate-audio', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: textInput })
-      });
+      try {
+        // サーバーにリクエスト
+        const response = await fetch('/generate-audio', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: textInput })
+        });
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        const preview = document.getElementById('preview');
-        const downloadLink = document.getElementById('downloadLink');
+        // ステータスがOKなら音声を生成
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          const preview = document.getElementById('preview');
+          const downloadLink = document.getElementById('downloadLink');
 
-        preview.src = url;
-        downloadLink.href = url;
-        downloadLink.download = 'output.mp3';
-        downloadLink.style.display = 'inline';
-        downloadLink.textContent = '生成された音声をダウンロード';
-      } else {
-        alert('音声生成に失敗しました。');
+          preview.src = url;
+          downloadLink.href = url;
+          downloadLink.download = 'output.mp3';
+          downloadLink.style.display = 'inline';
+          downloadLink.textContent = '生成された音声をダウンロード';
+        } else {
+          // エラーメッセージを取得して表示
+          const errorText = await response.text();
+          console.error('サーバーエラー:', errorText);
+          alert(`音声生成に失敗しました: ${errorText}`);
+        }
+      } catch (error) {
+        console.error('通信エラー:', error);
+        alert('通信エラーが発生しました。コンソールログを確認してください。');
       }
     });
   </script>
