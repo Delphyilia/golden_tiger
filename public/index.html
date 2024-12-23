@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MP3 Player</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1><center>gold tiger</center></h1>
+  <center><img src="goldtiger.png"></center>
+  <div id="button-container"></div>
+  <script src="script.js"></script>
+
+  <h1>ひらがな音声結合ツール</h1>
+  <form id="textForm">
+    <label for="textInput">ひらがなを入力してください（20文字以内）:</label><br>
+    <input type="text" id="textInput" maxlength="20" placeholder="例: あいうえお">
+    <button type="submit">音声を生成</button>
+  </form>
+  <audio id="preview" controls></audio>
+  <a id="downloadLink" style="display:none;">生成された音声をダウンロード</a>
+
+  <script>
+    document.getElementById('textForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const textInput = document.getElementById('textInput').value;
+
+      // ひらがな以外を含む入力は拒否
+      const regex = /^[\u3041-\u3096]+$/; // ひらがなの範囲
+      if (!regex.test(textInput)) {
+        alert('ひらがな以外の文字が含まれています。');
+        return;
+      }
+
+      // サーバーにリクエスト
+      const response = await fetch('/generate-audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: textInput })
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const preview = document.getElementById('preview');
+        const downloadLink = document.getElementById('downloadLink');
+
+        preview.src = url;
+        downloadLink.href = url;
+        downloadLink.download = 'output.mp3';
+        downloadLink.style.display = 'inline';
+        downloadLink.textContent = '生成された音声をダウンロード';
+      } else {
+        alert('音声生成に失敗しました。');
+      }
+    });
+  </script>
+
+</body>
+</html>
