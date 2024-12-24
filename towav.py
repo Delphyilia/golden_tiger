@@ -31,7 +31,7 @@ def convert_mp3_to_wav(input_dir, output_dir):
                 print(f'Error converting {filename}: {e}')
 
 # 使用例
-input_directory = './public/audio'  # MP3ファイルが保存されているディレクトリ
-output_directory = './public/audio'  # WAVファイルを保存するディレクトリ
+input_directory = './build/public'  # MP3ファイルが保存されているディレクトリ
+output_directory = './build/public/'  # WAVファイルを保存するディレクトリ
 
 convert_mp3_to_wav(input_directory, output_directory)
